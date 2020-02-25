@@ -9,7 +9,7 @@ canvas.height = window.innerHeight /1.5;
 
 let c = canvas.getContext("2d");
 
-
+let status = false;
 
 
 //Paddle
@@ -64,6 +64,9 @@ let Ball =  function(x,y,dy,dx,radious,color) {
 
         if(this.y -this.radious   <= 0) {
             this.dy++;
+        }else if(this.y + this.radious >= canvas.height){
+            status = true;
+            gameOver("lose")
         }
 
         if(this.x + this.radious +this.dx > canvas.width || this.x -this.radious  <= 0){
@@ -115,6 +118,7 @@ function drawBricks() {
             let b = bricks[r][e];
 
             if(b.status) {
+                c.beginPath();
                 c.fillStyle = b.color;
                 c.strokeStyle =  b.color;
                 c.fillRect(b.x, b.y, brick.width, brick.height);
@@ -125,8 +129,12 @@ function drawBricks() {
 }
 
 
+if(!status){
+    drawBricks()
+}
 
-drawBricks()
+
+
 let paddle = new Paddle(canvas.width/2,100);
 let ball = new Ball(canvas.width /2, canvas.height /2 , 2,2, 5, "#D94E73");
 
@@ -167,7 +175,7 @@ let game = (function (paddleObj, ballObj){
          }
     }
 
-
+    
     //ball collision with brick
     for(let r =0; r < brick.row; r++) {
         for (let e =0; e < brick.column; e++) {
@@ -178,20 +186,37 @@ let game = (function (paddleObj, ballObj){
     
                         ballObj.dy = -ballObj.dy;
                         b.status = false;
-                        // bricks[r].splice (e, 1);
+                        
                     }
                 }
             }
         }
     }
 
+    
+        paddleObj.update();
+        ballObj.update();
+        if(!status){drawBricks()}
 
-    paddleObj.update();
-    ballObj.update();
-    drawBricks()
     }
+
+    
     animate()
+    
+    
 
 })(paddle, ball);
 
 
+
+function gameOver(str) {
+    
+    if(str === 'lose') {
+        c.clearRect(0,0,canvas.width,canvas.height);
+        c.fillText('GAME OVER!!!!', canvas.width /2 - 90, canvas.height /2);
+        c.fillText('refresh the page  to start again ', canvas.width /2 - 140, canvas.height /2 + 30);
+        c.font = "20px Georgia";
+        
+        
+    }
+}

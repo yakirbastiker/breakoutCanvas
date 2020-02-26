@@ -13,7 +13,7 @@ let status = false;
 
 
 //Paddle
-let paddleSpped = 5;
+let paddleSpped = 7;
 
 let Paddle =function (x,width) {
     this.width =width;

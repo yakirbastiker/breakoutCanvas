@@ -133,10 +133,22 @@ if(!status){
     drawBricks()
 }
 
+//ball at start fall left or right (random)
+function ballxStart() {
+    let num = Math.random();
+    let xd;
+    if(num < 0.5) {
+        xd = -2;
+    } else {
+        xd = 2;
+    }
+
+    return xd
+}
 
 
 let paddle = new Paddle(canvas.width/2,100);
-let ball = new Ball(canvas.width /2, canvas.height /2 , 2,2, 5, "#D94E73");
+let ball = new Ball(canvas.width /2, canvas.height /2 , 2,ballxStart(), 5, "#D94E73");
 
 let game = (function (paddleObj, ballObj){
 
@@ -214,9 +226,13 @@ function gameOver(str) {
     if(str === 'lose') {
         c.clearRect(0,0,canvas.width,canvas.height);
         c.fillText('GAME OVER!!!!', canvas.width /2 - 90, canvas.height /2);
-        c.fillText('refresh the page  to start again ', canvas.width /2 - 140, canvas.height /2 + 30);
+        c.fillText('double click  to start again ', canvas.width /2 - 140, canvas.height /2 + 30);
         c.font = "20px Georgia";
         
-        
+        //add event on page
+        document.addEventListener("dblclick", function(){
+            location.reload();
+        })
     }
 }
+
